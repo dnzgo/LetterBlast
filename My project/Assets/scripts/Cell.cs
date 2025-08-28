@@ -8,6 +8,6 @@ public class Cell : MonoBehaviour
     public void SetOccupied(bool value)
     {
         isOccupied = value;
-        GetComponent<SpriteRenderer>().color = value ? Color.gray : Color.white;
+        GetComponent<SpriteRenderer>().color = value ? Color.red : Color.white;
     }
 }

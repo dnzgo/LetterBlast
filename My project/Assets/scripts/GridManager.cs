@@ -9,6 +9,8 @@ public class GridManager : MonoBehaviour
     [Header("References")]
     public GameObject cellPrefab;
 
+    public Cell[,] gridCells; // fill in GanerateGrid
+
     void Start()
     {
         GenerateGrid();
@@ -16,6 +18,8 @@ public class GridManager : MonoBehaviour
 
     void GenerateGrid()
     {
+        gridCells = new Cell[gridWidth, gridHeigth];
+        
         float offsetX = (gridWidth * cellSize) / 2f - cellSize / 2f;
         float offsetY = (gridHeigth * cellSize) / 2f - cellSize / 2f;
 
@@ -30,7 +34,22 @@ public class GridManager : MonoBehaviour
                 Cell cell = newCell.GetComponent<Cell>();
                 cell.gridPosition = new Vector2Int(x, y);
                 cell.SetOccupied(false);
+
+                gridCells[x, y] = cell;
             }
         }
     }
+
+    public Cell GetCell(int x, int y)
+    {
+        return gridCells[x, y];
+    }
+
+    public Vector3 CellWorldPosition(int x, int y)
+    {
+        return new Vector3(x * cellSize - (gridWidth * cellSize) / 2f + cellSize / 2f,
+                            y * cellSize - (gridHeigth * cellSize) / 2f + cellSize / 2f,
+                            0f);
+    }
+
 }
