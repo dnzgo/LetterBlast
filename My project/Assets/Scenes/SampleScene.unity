@@ -175,7 +175,7 @@ MonoBehaviour:
   - {fileID: 7701652189709714880, guid: d5e171850ecca40f198a2ef1cdf77d0f, type: 3}
   - {fileID: 8407855147031862654, guid: c52f151c4015048a6b1ff73d72d64924, type: 3}
   - {fileID: 5407021277082248417, guid: 2f01be0625d4a4ecc81cb5f8cf28d2b9, type: 3}
-  - {fileID: 2948477784316658062, guid: 2f4b37bb593414bb99e8c61049c58557, type: 3}
+  - {fileID: 7040404265989269325, guid: cd2ea7845c16d412bad554c8c038452b, type: 3}
   yPos: -4
   xSpacing: 2
 --- !u!4 &246167559
@@ -491,6 +491,7 @@ MonoBehaviour:
   gridWidth: 10
   gridHeigth: 10
   cellSize: 0.5
+  lineMult: 10
   cellPrefab: {fileID: 2948477784316658062, guid: 2f4b37bb593414bb99e8c61049c58557, type: 3}
 --- !u!4 &1848456006
 Transform:

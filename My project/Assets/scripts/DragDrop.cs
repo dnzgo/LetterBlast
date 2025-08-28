@@ -111,6 +111,11 @@ public class DragDrop : MonoBehaviour
         int point = cellCount * placedMult;
         GameManager.Instance.AddScore(point);
 
+        // check for clearing
+        gridManager.CheckFullRows();
+        gridManager.CheckFullColumns();
+        gridManager.CheckFullSquares();
+
         Destroy(gameObject);
 
         if (spawner != null) spawner.LetterPlaced(gameObject);
