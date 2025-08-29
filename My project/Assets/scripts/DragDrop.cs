@@ -11,7 +11,7 @@ public class DragDrop : MonoBehaviour
 
     public Spawner spawner;
 
-    public int placedMult = 5;
+    public int placedMult = 1;
 
     void Start()
     {
@@ -110,11 +110,7 @@ public class DragDrop : MonoBehaviour
         int cellCount = transform.childCount;
         int point = cellCount * placedMult;
         GameManager.Instance.AddScore(point);
-
-        // check for clearing
-        gridManager.CheckFullRows();
-        gridManager.CheckFullColumns();
-        gridManager.CheckFullSquares();
+        gridManager.CheckAndClearAll();
 
         Destroy(gameObject);
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -13,6 +14,11 @@ public class GridManager : MonoBehaviour
     public GameObject cellPrefab;
 
     public Cell[,] gridCells; // fill in GanerateGrid
+
+    // List to save full parts
+    private List<int> fullRows = new List<int>();
+    private List<int> fullCols = new List<int>();
+    private List<Vector2Int> fullSquares = new List<Vector2Int>();
 
     void Start()
     {
@@ -55,12 +61,15 @@ public class GridManager : MonoBehaviour
                             0f);
     }
 
+private int squareSize = 3;
+
+// Check Row
     public void CheckFullRows()
     {
+        fullRows.Clear();
         for (int y = 0; y < gridHeigth; y++)
         {
             bool rowFull = true;
-
             for (int x = 0; x < gridWidth; x++)
             {
                 if (!gridCells[x, y].isOccupied)
@@ -69,29 +78,17 @@ public class GridManager : MonoBehaviour
                     break;
                 }
             }
-
-            if (rowFull)
-            {
-                ClearRow(y);
-                GameManager.Instance.AddScore(gridWidth * lineMult); // bonus point for clearing
-            }
+            if (rowFull) fullRows.Add(y);
         }
     }
 
-    private void ClearRow(int y)
-    {
-        for (int x = 0; x < gridWidth; x++)
-        {
-            gridCells[x, y].SetOccupied(false);
-        }
-    }
-
+    // Check Column
     public void CheckFullColumns()
     {
+        fullCols.Clear();
         for (int x = 0; x < gridWidth; x++)
         {
             bool colFull = true;
-
             for (int y = 0; y < gridHeigth; y++)
             {
                 if (!gridCells[x, y].isOccupied)
@@ -100,31 +97,19 @@ public class GridManager : MonoBehaviour
                     break;
                 }
             }
-
-            if (colFull)
-            {
-                ClearColumn(x);
-                GameManager.Instance.AddScore(gridHeigth * lineMult); // bonus
-            }
+            if (colFull) fullCols.Add(x);
         }
     }
 
-    private void ClearColumn(int x)
+    // Check Square
+    public void CheckFullSquares()
     {
-        for (int y = 0; y < gridHeigth; y++)
-        {
-            gridCells[x, y].SetOccupied(false);
-        }
-    }
-    
-    public void CheckFullSquares(int squareSize = 3)
-    {
+        fullSquares.Clear();
         for (int x = 0; x <= gridWidth - squareSize; x++)
         {
             for (int y = 0; y <= gridHeigth - squareSize; y++)
             {
                 bool squareFull = true;
-
                 for (int i = 0; i < squareSize; i++)
                 {
                     for (int j = 0; j < squareSize; j++)
@@ -137,27 +122,89 @@ public class GridManager : MonoBehaviour
                     }
                     if (!squareFull) break;
                 }
+                if (squareFull) fullSquares.Add(new Vector2Int(x, y));
+            }
+        }
+    }
 
-                if (squareFull)
+    // Clearing
+    public void ClearAllDetected()
+    {
+        HashSet<Vector2Int> cellsToClear = new HashSet<Vector2Int>();
+        int clearedStructures = 0; // row + column + square
+
+        // Row
+        foreach (int y in fullRows)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                cellsToClear.Add(new Vector2Int(x, y));
+            }
+            GameManager.Instance.AddScore(gridWidth * 10);
+            clearedStructures++;
+        }
+
+        // Column
+        foreach (int x in fullCols)
+        {
+            for (int y = 0; y < gridHeigth; y++)
+            {
+                cellsToClear.Add(new Vector2Int(x, y));
+            }
+            GameManager.Instance.AddScore(gridHeigth * 10);
+            clearedStructures++;
+        }
+
+        // square
+        foreach (var pos in fullSquares)
+        {
+            for (int x = pos.x; x < pos.x + squareSize; x++)
+            {
+                for (int y = pos.y; y < pos.y + squareSize; y++)
                 {
-                    ClearSquare(x, y, squareSize);
-                    GameManager.Instance.AddScore(squareSize * squareSize * 15); // bonus
+                    cellsToClear.Add(new Vector2Int(x, y));
                 }
             }
+            GameManager.Instance.AddScore(squareSize * squareSize * 5);
+            clearedStructures++;
         }
-    }
 
-    private void ClearSquare(int startX, int startY, int size)
-    {
-        for (int x = startX; x < startX + size; x++)
+        foreach (var p in cellsToClear)
+            gridCells[p.x, p.y].SetOccupied(false);
+
+        // combo points
+        if (clearedStructures > 0)
         {
-            for (int y = startY; y < startY + size; y++)
+            // multi-clear
+            if (clearedStructures > 1)
             {
-                gridCells[x, y].SetOccupied(false);
+                int multiBonus = (clearedStructures - 1) * GameManager.Instance.multiClearBonusPerStructure;
+                GameManager.Instance.AddScore(multiBonus);
+                Debug.Log($"Multi-Clear x{clearedStructures} -> + {multiBonus}");
             }
+
+            // Streak
+            GameManager.Instance.comboStreak++;
+            int streakBonus = GameManager.Instance.comboStreak * GameManager.Instance.streakBonusPerStep;
+            GameManager.Instance.AddScore(streakBonus);
+            Debug.Log($"Streak x{GameManager.Instance.comboStreak} → +{streakBonus}");
         }
+        else
+        {
+            if (GameManager.Instance.comboStreak != 0)
+                Debug.Log("Streak Broken");
+            GameManager.Instance.comboStreak = 0;
+        }
+
     }
 
+    public void CheckAndClearAll()
+    {
+        CheckFullRows();
+        CheckFullColumns();
+        CheckFullSquares();
+        ClearAllDetected();
+    }
 
 
 }
