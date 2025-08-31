@@ -87,7 +87,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.24899948, y: 0.49799904}
+  m_Offset: {x: 0.4931003, y: 0.9968138}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -97,7 +97,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.0503595, y: 1.5595493}
+  m_Size: {x: 2.175346, y: 3.193963}
   m_EdgeRadius: 0
 --- !u!1001 &591425523648572559
 PrefabInstance:
@@ -175,7 +175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -233,7 +233,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -295,11 +295,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -361,7 +361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2458309892144264066, guid: 2de078286d5d04ffab4459bb3683552c, type: 3}
       propertyPath: m_LocalPosition.z

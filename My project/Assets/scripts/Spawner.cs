@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,12 +33,32 @@ public class Spawner : MonoBehaviour
 
             activeLetters.Add(letter);
         }
+
+        if (activeLetters.Count != 0)
+        {
+            GameManager.Instance.CheckGameOver(activeLetters);
+        }
+            
+        
     }
 
     public void LetterPlaced(GameObject letter)
     {
-        if (activeLetters.Contains(letter)) activeLetters.Remove(letter);
+        if (activeLetters.Contains(letter))
+        {
+            activeLetters.Remove(letter);
+        }
 
-        if (activeLetters.Count == 0) SpawnBatch();
+
+        if (activeLetters.Count == 0)
+        {
+            SpawnBatch();
+        }
+        else
+        {
+            GameManager.Instance.CheckGameOver(activeLetters);
+        }
     }
+
+    public List<GameObject> GetActiveLetters() { return activeLetters; }
 }

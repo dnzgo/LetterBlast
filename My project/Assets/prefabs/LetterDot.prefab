@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 0}
   spawner: {fileID: 0}
-  placedMult: 5
+  placedMult: 1
 --- !u!61 &8361098276546168043
 BoxCollider2D:
   m_ObjectHideFlags: 0

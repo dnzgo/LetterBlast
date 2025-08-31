@@ -15,12 +15,14 @@ public class GridManager : MonoBehaviour
 
     public Cell[,] gridCells; // fill in GanerateGrid
 
+    private int squareSize = 3;
+
     // List to save full parts
     private List<int> fullRows = new List<int>();
     private List<int> fullCols = new List<int>();
     private List<Vector2Int> fullSquares = new List<Vector2Int>();
 
-    void Start()
+    void Awake()
     {
         GenerateGrid();
     }
@@ -36,8 +38,11 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < gridHeigth; y++)
             {
-                Vector2 position = new Vector2(x * cellSize - offsetX, y * cellSize - offsetY);
-                GameObject newCell = Instantiate(cellPrefab, position, Quaternion.identity);
+                // Position cells relative to GridManager's transform position
+                Vector3 localPosition = new Vector3(x * cellSize - offsetX, y * cellSize - offsetY, 0);
+                Vector3 worldPosition = transform.position + localPosition;
+                
+                GameObject newCell = Instantiate(cellPrefab, worldPosition, Quaternion.identity);
                 newCell.transform.parent = this.transform;
 
                 Cell cell = newCell.GetComponent<Cell>();
@@ -56,14 +61,17 @@ public class GridManager : MonoBehaviour
 
     public Vector3 CellWorldPosition(int x, int y)
     {
-        return new Vector3(x * cellSize - (gridWidth * cellSize) / 2f + cellSize / 2f,
-                            y * cellSize - (gridHeigth * cellSize) / 2f + cellSize / 2f,
-                            0f);
+        // Return world position relative to GridManager's transform position
+        float offsetX = (gridWidth * cellSize) / 2f - cellSize / 2f;
+        float offsetY = (gridHeigth * cellSize) / 2f - cellSize / 2f;
+
+        Vector3 localPos = new Vector3(x * cellSize - offsetX, y * cellSize - offsetY, 0f);
+        return transform.position + localPos;
     }
 
-private int squareSize = 3;
 
-// Check Row
+
+    // Check Row
     public void CheckFullRows()
     {
         fullRows.Clear();
@@ -206,5 +214,44 @@ private int squareSize = 3;
         ClearAllDetected();
     }
 
+    public bool CanPlaceLetter(DragDrop letter)
+    {
+
+        int gridSize = gridHeigth; //gridCells.GetLength(0)
+
+        Vector2Int[] shape = letter.GetShapeCells();
+
+        // try to place
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                bool canPlaceHere = true;
+
+                foreach (var offset in shape)
+                {
+                    int checkX = x + offset.x;
+                    int checkY = y + offset.y;
+
+                    // if its out of grid 
+                    if (checkX < 0 || checkX >= gridSize || checkY < 0 || checkY >= gridSize)
+                    {
+                        canPlaceHere = false;
+                        break;
+                    }
+                    // does cell full
+                    if (gridCells[checkX, checkY].isOccupied)
+                    {
+                        canPlaceHere = false;
+                        break;
+                    }
+
+                }
+
+                if (canPlaceHere) return true; // fits at least one place
+            }
+        }
+        return false; // does not fit any place
+    }
 
 }
