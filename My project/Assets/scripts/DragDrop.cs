@@ -14,6 +14,8 @@ public class DragDrop : MonoBehaviour
 
     public int placedMult = 1;
 
+    public Color assignedColor;
+
     private Vector2Int[] cachedShapeOffsets = null;
     private bool offsetsComputed = false;
     void Awake()
@@ -111,7 +113,12 @@ public class DragDrop : MonoBehaviour
                 int gridX = Mathf.RoundToInt((localPos.x + offsetX) / gridManager.cellSize);
                 int gridY = Mathf.RoundToInt((localPos.y + offsetY) / gridManager.cellSize);
 
-                gridManager.GetCell(gridX, gridY).SetOccupied(true);
+                Cell gridCell = gridManager.GetCell(gridX, gridY);
+                gridCell.SetOccupied(true);
+
+                // copy letterCell renderer to gridCell
+                var letterRenderer = cell.GetComponent<SpriteRenderer>();
+                gridCell.CopyAppearanceFrom(letterRenderer);
             }
             // increase score
             int cellCount = transform.childCount;

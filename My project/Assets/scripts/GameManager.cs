@@ -72,9 +72,6 @@ public class GameManager : MonoBehaviour
         }
 }
 
-
-    
-
     public void GameOver()
     {
         Debug.Log("---Game Over---");
@@ -90,6 +87,5 @@ public class GameManager : MonoBehaviour
         // TODO: some game over ui etc.
 
     }
-
 
 }

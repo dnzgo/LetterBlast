@@ -178,7 +178,9 @@ public class GridManager : MonoBehaviour
         }
 
         foreach (var p in cellsToClear)
-            gridCells[p.x, p.y].SetOccupied(false);
+        {
+            gridCells[p.x, p.y].ResetAppearance();
+        }
 
         // combo points
         if (clearedStructures > 0)

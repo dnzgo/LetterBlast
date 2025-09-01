@@ -10,6 +10,16 @@ public class Spawner : MonoBehaviour
 
     private List<GameObject> activeLetters = new List<GameObject>();
 
+    public Color[] letterColors = new Color[6]
+    {
+        new Color(40f, 160f, 161f), // Light Sea Green
+        new Color(240f, 211f, 186f),   // Dutch White
+        new Color(244f, 130f, 115f),     // Salmon
+        new Color(227f, 104f, 87f),    // Terra Cotta
+        new Color(246f, 222f, 126f),    // Jasmine
+        new Color(67f, 146f, 192f)    // Cyan-Blue Azure
+    };
+
     void Start()
     {
         SpawnBatch();
@@ -31,6 +41,8 @@ public class Spawner : MonoBehaviour
 
             dragDrop.spawner = this;
 
+            AssignRandomColor(letter);
+
             activeLetters.Add(letter);
         }
 
@@ -38,8 +50,8 @@ public class Spawner : MonoBehaviour
         {
             GameManager.Instance.CheckGameOver(activeLetters);
         }
-            
-        
+
+
     }
 
     public void LetterPlaced(GameObject letter)
@@ -61,4 +73,25 @@ public class Spawner : MonoBehaviour
     }
 
     public List<GameObject> GetActiveLetters() { return activeLetters; }
+
+    public void AssignRandomColor(GameObject letter)
+    {
+        // random renk seç
+        Color chosenColor = letterColors[Random.Range(0, letterColors.Length)];
+
+        // letter prefab’in altındaki cell objelerine uygula
+        foreach (Transform child in letter.transform)
+        {
+            if (child.CompareTag("letterCell"))
+            {
+                var sr = child.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.color = chosenColor;
+            }
+        }
+
+        // bu rengi letter’ın script’inde sakla (ileride grid cell’e aktarmak için)
+        letter.GetComponent<DragDrop>().assignedColor = chosenColor;
+    }
+    
 }
