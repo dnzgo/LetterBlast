@@ -1,5 +1,4 @@
 using UnityEngine;
-using TMPro;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
@@ -9,10 +8,11 @@ public class GameManager : MonoBehaviour
     public Spawner spawner;
     public GridManager gridManager;
 
+    private bool isPaused = false;
+    private bool isGameStarted = false;
+
     public int score = 0;
     public int bestScore = 0;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI bestScoreText;
 
     [Header("Combo Settings")]
     public int multiClearBonusPerStructure = 50;
@@ -28,7 +28,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
-        UpdateScoreUI();
+        UIManager.Instance.UpdateBestScoreUI(bestScore);
+        UIManager.Instance.UpdateScoreUI(score);
+        UIManager.Instance.ShowMainMenu();
     }
 
     public void AddScore(int amount)
@@ -37,16 +39,9 @@ public class GameManager : MonoBehaviour
         if (score > bestScore)
         {
             bestScore = score;
-            PlayerPrefs.SetInt("BestScore", bestScore);
-            PlayerPrefs.Save();
+            UIManager.Instance.UpdateBestScoreUI(bestScore);
         }
-        UpdateScoreUI();
-    }
-
-    void UpdateScoreUI()
-    {
-        if (scoreText != null) scoreText.text = score.ToString();
-        if (bestScoreText != null) bestScoreText.text = bestScore.ToString();
+        UIManager.Instance.UpdateScoreUI(score);
     }
 
     public void CheckGameOver(List<GameObject> currentLetters)
@@ -70,22 +65,70 @@ public class GameManager : MonoBehaviour
         {
             GameOver();
         }
-}
+    }
 
     public void GameOver()
     {
         Debug.Log("---Game Over---");
 
-        // bestScore check and save
-        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
-        if (score > bestScore)
+        isGameStarted = false;
+        Time.timeScale = 0f;
+
+        // Best score save
+        PlayerPrefs.SetInt("BestScore", bestScore);
+        PlayerPrefs.Save();
+
+        UIManager.Instance.ShowGameOver();
+
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("Game Started!");
+        isGameStarted = true;
+        isPaused = false;
+        Time.timeScale = 1f;
+        score = 0;
+        UIManager.Instance.UpdateScoreUI(score);
+    }
+    public void PauseGame()
+    {
+        if (!isGameStarted) return;
+        Debug.Log("Game Paused!");
+        isPaused = true;
+        Time.timeScale = 0f;
+    }
+    public void ResumeGame()
+    {
+        if (!isGameStarted) return;
+        Debug.Log("Game Resumed!");
+        isPaused = false;
+        Time.timeScale = 1f;
+    }
+    public void RestartGame()
+    {
+        isPaused = false;
+        isGameStarted = true;
+        Time.timeScale = 1f;
+        // score reset
+        score = 0;
+        UIManager.Instance.UpdateScoreUI(score);
+
+        // grid reset
+        if (gridManager != null)
         {
-            PlayerPrefs.SetInt("BestScore", score);
-            PlayerPrefs.Save();
+            gridManager.ClearGrid();
         }
 
-        // TODO: some game over ui etc.
+        // spawner reset
+        if (spawner != null)
+        {
+            spawner.ClearLetters();
+            spawner.SpawnBatch();
+        }
 
+        // incativate gameOver panel and activate GameHUD
+        UIManager.Instance.ShowGameHUD();
     }
 
 }

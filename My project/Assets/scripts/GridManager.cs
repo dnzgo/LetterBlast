@@ -41,7 +41,7 @@ public class GridManager : MonoBehaviour
                 // Position cells relative to GridManager's transform position
                 Vector3 localPosition = new Vector3(x * cellSize - offsetX, y * cellSize - offsetY, 0);
                 Vector3 worldPosition = transform.position + localPosition;
-                
+
                 GameObject newCell = Instantiate(cellPrefab, worldPosition, Quaternion.identity);
                 newCell.transform.parent = this.transform;
 
@@ -254,6 +254,19 @@ public class GridManager : MonoBehaviour
             }
         }
         return false; // does not fit any place
+    }
+
+    public void ClearGrid()
+    {
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeigth; y++)
+            {
+                Cell cell = gridCells[x, y];
+                cell.SetOccupied(false);
+                cell.ResetAppearance();
+            }
+        }
     }
 
 }

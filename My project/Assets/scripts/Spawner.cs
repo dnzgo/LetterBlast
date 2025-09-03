@@ -25,7 +25,7 @@ public class Spawner : MonoBehaviour
         SpawnBatch();
     }
 
-    void SpawnBatch()
+    public void SpawnBatch()
     {
         activeLetters.Clear();
 
@@ -92,6 +92,18 @@ public class Spawner : MonoBehaviour
 
         // bu rengi letter’ın script’inde sakla (ileride grid cell’e aktarmak için)
         letter.GetComponent<DragDrop>().assignedColor = chosenColor;
+    }
+
+    public void ClearLetters()
+    {
+        foreach (var letter in activeLetters)
+        {
+            if (letter != null)
+            {
+                Destroy(letter.gameObject);
+            }
+        }
+        activeLetters.Clear();
     }
     
 }
