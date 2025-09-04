@@ -49,6 +49,7 @@ MonoBehaviour:
   gridManager: {fileID: 0}
   spawner: {fileID: 0}
   placedMult: 1
+  assignedColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &8361098276546168043
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -83,7 +84,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.000000029802322, y: -0.0014947653}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -93,7 +94,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5336167, y: 0.530627}
+  m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
 --- !u!1001 &6538033640083800701
 PrefabInstance:
