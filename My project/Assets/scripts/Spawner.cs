@@ -19,12 +19,12 @@ public class Spawner : MonoBehaviour
         new Color(246f, 222f, 126f),    // Jasmine
         new Color(67f, 146f, 192f)    // Cyan-Blue Azure
     };
-
+/*
     void Start()
     {
         SpawnBatch();
     }
-
+*/
     public void SpawnBatch()
     {
         activeLetters.Clear();

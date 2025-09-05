@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public GameObject pausePanel;
     public GameObject gameOverPanel;
 
+    [Header("Texts")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestScoreText;
 

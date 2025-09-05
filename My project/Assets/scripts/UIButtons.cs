@@ -19,7 +19,13 @@ public class UIButtons : MonoBehaviour
     }
     public void OnRestartButton()
     {
-        UIManager.Instance.ShowGameHUD();
         GameManager.Instance.RestartGame();
+        UIManager.Instance.ShowGameHUD();
+    }
+    public void OnMainMenuButton()
+    {
+        UIManager.Instance.ShowMainMenu();
+        GameManager.Instance.ReturnToMainMenu();
+        
     }
 }

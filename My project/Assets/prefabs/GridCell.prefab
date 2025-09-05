@@ -48,6 +48,7 @@ MonoBehaviour:
   gridPosition: {x: 0, y: 0}
   isOccupied: 0
   spriteRenderer: {fileID: 71459894685702219}
+  clearEffectPrefab: {fileID: 4290297470325758060, guid: fcf5d1a59c92b45e9b62dc80fc682479, type: 3}
   defaultSprite: {fileID: 0}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!212 &71459894685702219

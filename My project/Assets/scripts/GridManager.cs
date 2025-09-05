@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
@@ -179,7 +180,9 @@ public class GridManager : MonoBehaviour
 
         foreach (var p in cellsToClear)
         {
-            gridCells[p.x, p.y].ResetAppearance();
+            //gridCells[p.x, p.y].PlayClearAnimation();
+            //gridCells[p.x, p.y].ResetAppearance();
+            StartCoroutine(ClearCellWithDelay(gridCells[p.x, p.y], 0.3f));
         }
 
         // combo points
@@ -267,6 +270,14 @@ public class GridManager : MonoBehaviour
                 cell.ResetAppearance();
             }
         }
+    }
+
+    private IEnumerator ClearCellWithDelay(Cell cell, float delay)
+    {
+        cell.PlayClearAnimation();
+        yield return new WaitForSeconds(delay);
+        cell.ResetAppearance();
+        cell.SetOccupied(false);
     }
 
 }

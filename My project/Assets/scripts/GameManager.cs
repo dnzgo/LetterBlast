@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
         score = 0;
+        spawner.SpawnBatch();
         UIManager.Instance.UpdateScoreUI(score);
     }
     public void PauseGame()
@@ -126,9 +127,15 @@ public class GameManager : MonoBehaviour
             spawner.ClearLetters();
             spawner.SpawnBatch();
         }
+    }
+    public void ReturnToMainMenu()
+    {
+        isGameStarted = false;
+        isPaused = false;
 
-        // incativate gameOver panel and activate GameHUD
-        UIManager.Instance.ShowGameHUD();
+        gridManager.ClearGrid();
+        spawner.ClearLetters();
+        score = 0;
     }
 
 }
