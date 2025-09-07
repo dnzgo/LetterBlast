@@ -11,9 +11,13 @@ public class UIManager : MonoBehaviour
     public GameObject pausePanel;
     public GameObject gameOverPanel;
 
-    [Header("Texts")]
+    [Header("Game HUD UI")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestScoreText;
+
+    [Header("GameOver UI")]
+    public TextMeshProUGUI gameOverScore;
+    public TextMeshProUGUI gameOverBestScore;
 
     void Awake()
     {
@@ -28,6 +32,15 @@ public class UIManager : MonoBehaviour
     public void UpdateBestScoreUI(int bestScore)
     {
         if (bestScoreText != null) bestScoreText.text = bestScore.ToString();
+    }
+
+    public void UpdateGameOverScores(int score, int bestScore)
+    {
+        if (gameOverScore != null)
+            gameOverScore.text = score.ToString();
+
+        if (gameOverBestScore != null)
+            gameOverBestScore.text = bestScore.ToString();
     }
 
     public void ShowMainMenu()

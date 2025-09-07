@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
 
         UIManager.Instance.ShowGameOver();
+        UIManager.Instance.UpdateGameOverScores(score, bestScore);
 
     }
 

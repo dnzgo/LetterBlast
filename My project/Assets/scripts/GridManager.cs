@@ -274,10 +274,10 @@ public class GridManager : MonoBehaviour
 
     private IEnumerator ClearCellWithDelay(Cell cell, float delay)
     {
+        cell.SetOccupied(false);
         cell.PlayClearAnimation();
         yield return new WaitForSeconds(delay);
         cell.ResetAppearance();
-        cell.SetOccupied(false);
     }
 
 }
