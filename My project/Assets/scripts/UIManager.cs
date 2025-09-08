@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +15,9 @@ public class UIManager : MonoBehaviour
     [Header("Game HUD UI")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI bestScoreText;
+    public TextMeshProUGUI comboText;
+    public GameObject floatingScorePrefab;
+    public Transform gameHUDTransform;
 
     [Header("GameOver UI")]
     public TextMeshProUGUI gameOverScore;
@@ -63,7 +67,6 @@ public class UIManager : MonoBehaviour
         HideAll();
         gameOverPanel.SetActive(true);
     }
-
     private void HideAll()
     {
         mainMenuPanel.SetActive(false);
@@ -71,4 +74,87 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         gameOverPanel.SetActive(false);
     }
+    public void ShowCombo(string message)
+    {
+        //StopAllCoroutines();
+        StartCoroutine(ShowComboRoutine(message));
+    }
+
+    private IEnumerator ShowComboRoutine(string message)
+    {
+        comboText.text = message;
+        comboText.gameObject.SetActive(true);
+
+        float duration = 0.3f; //rainbow duration
+        float elapsed = 0f;
+
+        Color[] rainbowColors = new Color[]
+        {
+            Color.red,
+            new Color(1f, 0.5f, 0f), // orange
+            Color.yellow,
+            Color.green,
+            Color.cyan,
+            Color.blue,
+            new Color(0.5f, 0f, 1f) // purple
+        };
+
+        int colorIndex = 0;
+
+        while (elapsed < duration)
+        {
+            float t = (elapsed / duration) * (rainbowColors.Length - 1);
+            colorIndex = Mathf.FloorToInt(t);
+            int nextIndex = Mathf.Clamp(colorIndex + 1, 0, rainbowColors.Length - 1);
+
+            comboText.color = Color.Lerp(rainbowColors[colorIndex], rainbowColors[nextIndex], t - colorIndex);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // after rainbow set to white
+        comboText.color = rainbowColors[rainbowColors.Length - 1];
+
+        yield return new WaitForSeconds(duration);
+        comboText.gameObject.SetActive(false);
+    }
+
+    public void SpawnFloatingScore(int amount, Vector3 worldPos, bool isBonus)
+    {
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+        GameObject obj = Instantiate(floatingScorePrefab, gameHUDTransform);
+        obj.transform.position = screenPos;
+
+        TextMeshProUGUI tmp = obj.GetComponent<TextMeshProUGUI>();
+        tmp.text = $"+{amount}";
+        tmp.color = isBonus ? Color.yellow : Color.white;
+
+        // animation: move to scoreText
+        StartCoroutine(FloatingScoreRoutine(obj.transform, tmp, isBonus));
+    }
+    
+    private IEnumerator FloatingScoreRoutine(Transform obj, TextMeshProUGUI tmp, bool isBonus)
+    {
+        Vector3 targetPos = scoreText.transform.position; // score text UI position
+
+        float t = 0;
+        float duration = isBonus ? 1f : 0.6f;
+        Vector3 startPos = obj.position;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float normalized = t / duration;
+
+            obj.position = Vector3.Lerp(startPos, targetPos, normalized);
+            tmp.alpha = 1f - normalized; // slowly disappear
+            yield return null;
+        }
+
+        Destroy(obj.gameObject);
+    }
+
+
 }

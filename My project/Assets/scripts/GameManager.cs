@@ -33,9 +33,11 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowMainMenu();
     }
 
-    public void AddScore(int amount)
+    public void AddScore(int amount, Vector3 worldPos, bool isBonus)
     {
         score += amount;
+        if (UIManager.Instance != null)
+            UIManager.Instance.SpawnFloatingScore(amount, worldPos, isBonus);
         if (score > bestScore)
         {
             bestScore = score;
@@ -77,6 +79,12 @@ public class GameManager : MonoBehaviour
         // Best score save
         PlayerPrefs.SetInt("BestScore", bestScore);
         PlayerPrefs.Save();
+
+        foreach (Transform child in UIManager.Instance.gameHUDTransform)
+        {
+            if (child.CompareTag("FloatingScore"))
+                Destroy(child.gameObject);
+        }
 
         UIManager.Instance.ShowGameOver();
         UIManager.Instance.UpdateGameOverScores(score, bestScore);

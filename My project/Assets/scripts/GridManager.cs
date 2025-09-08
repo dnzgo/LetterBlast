@@ -149,7 +149,7 @@ public class GridManager : MonoBehaviour
             {
                 cellsToClear.Add(new Vector2Int(x, y));
             }
-            GameManager.Instance.AddScore(gridWidth * 10);
+            GameManager.Instance.AddScore(gridWidth * 10, transform.position, false);
             clearedStructures++;
         }
 
@@ -160,7 +160,7 @@ public class GridManager : MonoBehaviour
             {
                 cellsToClear.Add(new Vector2Int(x, y));
             }
-            GameManager.Instance.AddScore(gridHeigth * 10);
+            GameManager.Instance.AddScore(gridHeigth * 10, transform.position, false);
             clearedStructures++;
         }
 
@@ -174,7 +174,7 @@ public class GridManager : MonoBehaviour
                     cellsToClear.Add(new Vector2Int(x, y));
                 }
             }
-            GameManager.Instance.AddScore(squareSize * squareSize * 5);
+            GameManager.Instance.AddScore(squareSize * squareSize * 5, transform.position, false);
             clearedStructures++;
         }
 
@@ -188,19 +188,24 @@ public class GridManager : MonoBehaviour
         // combo points
         if (clearedStructures > 0)
         {
+            string message = "";
+
             // multi-clear
             if (clearedStructures > 1)
             {
                 int multiBonus = (clearedStructures - 1) * GameManager.Instance.multiClearBonusPerStructure;
-                GameManager.Instance.AddScore(multiBonus);
-                Debug.Log($"Multi-Clear x{clearedStructures} -> + {multiBonus}");
+                GameManager.Instance.AddScore(multiBonus, transform.position, true);
+                message += $"Multi clear x{clearedStructures}\n";
             }
 
             // Streak
             GameManager.Instance.comboStreak++;
             int streakBonus = GameManager.Instance.comboStreak * GameManager.Instance.streakBonusPerStep;
-            GameManager.Instance.AddScore(streakBonus);
-            Debug.Log($"Streak x{GameManager.Instance.comboStreak} → +{streakBonus}");
+            GameManager.Instance.AddScore(streakBonus, transform.position, true);
+            message += $"Streak x{GameManager.Instance.comboStreak}";
+
+            if (!string.IsNullOrEmpty(message))
+                UIManager.Instance.ShowCombo(message);
         }
         else
         {

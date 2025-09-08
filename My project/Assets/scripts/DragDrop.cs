@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DragDrop : MonoBehaviour
@@ -121,9 +120,10 @@ public class DragDrop : MonoBehaviour
                 gridCell.CopyAppearanceFrom(letterRenderer);
             }
             // increase score
+            Vector3 worldPos = transform.position;
             int cellCount = transform.childCount;
             int point = cellCount * placedMult;
-            GameManager.Instance.AddScore(point);
+            GameManager.Instance.AddScore(point, worldPos, false);
             gridManager.CheckAndClearAll();
 
             if (spawner != null) spawner.LetterPlaced(gameObject);
