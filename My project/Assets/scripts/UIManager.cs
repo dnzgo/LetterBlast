@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
     {
         HideAll();
         gameHUDPanel.SetActive(true);
+        AdManager.Instance.ShowBannerBottom();
     }
     public void ShowPause()
     {
@@ -66,6 +67,7 @@ public class UIManager : MonoBehaviour
     {
         HideAll();
         gameOverPanel.SetActive(true);
+        AdManager.Instance.ShowInterstitial();
     }
     private void HideAll()
     {
@@ -73,6 +75,7 @@ public class UIManager : MonoBehaviour
         gameHUDPanel.SetActive(false);
         pausePanel.SetActive(false);
         gameOverPanel.SetActive(false);
+        AdManager.Instance.HideBanner();
     }
     public void ShowCombo(string message)
     {
