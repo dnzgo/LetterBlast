@@ -65,8 +65,14 @@ public class GameManager : MonoBehaviour
 
         if (!canPlay)
         {
-            GameOver();
+            TriggerGameOver();
         }
+    }
+
+    public void TriggerGameOver()
+    {
+        // open ad panel before game over activation
+        UIManager.Instance.ShowRewardedPanel();
     }
 
     public void GameOver()

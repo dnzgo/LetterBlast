@@ -184,7 +184,7 @@ public class AdManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Sow rewarded; when the user receives the reward, the onReward callback is triggered.
+    /// Show rewarded; when the user receives the reward, the onReward callback is triggered.
     /// </summary>
     public void ShowRewarded(Action onReward)
     {

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject[] letterPrefabs;
+    public GameObject[] offerPrefabs;
     public float yPos = -4f;
     public float xSpacing = 2f;
 
@@ -19,12 +20,6 @@ public class Spawner : MonoBehaviour
         new Color(246f, 222f, 126f),    // Jasmine
         new Color(67f, 146f, 192f)    // Cyan-Blue Azure
     };
-/*
-    void Start()
-    {
-        SpawnBatch();
-    }
-*/
     public void SpawnBatch()
     {
         activeLetters.Clear();
@@ -51,6 +46,37 @@ public class Spawner : MonoBehaviour
             GameManager.Instance.CheckGameOver(activeLetters);
         }
 
+
+    }
+    public void SpawnRewardLetters()
+    {
+        foreach (var letter in activeLetters)
+        {
+            if (letter != null)
+                Destroy(letter.gameObject);
+        }
+        activeLetters.Clear();
+        for (int i = -1; i <= 1; i++)
+        {
+            int index = Random.Range(0, offerPrefabs.Length);
+            Vector3 spawnPos = new Vector3(i * xSpacing, yPos, 0);
+            GameObject letter = Instantiate(offerPrefabs[index], spawnPos, Quaternion.identity);
+            letter.transform.localScale = Vector3.one * 0.5f;  // preview
+
+            DragDrop dragDrop = letter.GetComponent<DragDrop>();
+            if (dragDrop != null) dragDrop.gridManager = FindFirstObjectByType<GridManager>();
+
+            dragDrop.spawner = this;
+
+            AssignRandomColor(letter);
+
+            activeLetters.Add(letter);
+        }
+
+        if (activeLetters.Count != 0)
+        {
+            GameManager.Instance.CheckGameOver(activeLetters);
+        }
 
     }
 

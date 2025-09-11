@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public GameObject gameHUDPanel;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
+    public GameObject rewardedAdOfferPanel;
 
     [Header("Game HUD UI")]
     public TextMeshProUGUI scoreText;
@@ -69,12 +70,18 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(true);
         AdManager.Instance.ShowInterstitial();
     }
+    public void ShowRewardedPanel()
+    {
+        HideAll();
+        rewardedAdOfferPanel.SetActive(true);
+    }
     private void HideAll()
     {
         mainMenuPanel.SetActive(false);
         gameHUDPanel.SetActive(false);
         pausePanel.SetActive(false);
         gameOverPanel.SetActive(false);
+        rewardedAdOfferPanel.SetActive(false);
         AdManager.Instance.HideBanner();
     }
     public void ShowCombo(string message)

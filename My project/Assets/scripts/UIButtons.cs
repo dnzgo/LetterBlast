@@ -26,6 +26,25 @@ public class UIButtons : MonoBehaviour
     {
         UIManager.Instance.ShowMainMenu();
         GameManager.Instance.ReturnToMainMenu();
-        
+
     }
+    public void OnWatchAdButton()
+    {
+
+    AdManager.Instance.ShowRewarded(
+            onReward: () =>
+            {
+                // Oyuna devam etmek için 3 tek hücrelik letter spawn et
+                UIManager.Instance.ShowGameHUD();
+                Spawner spawner = FindFirstObjectByType<Spawner>();
+                if (spawner != null)
+                    spawner.SpawnRewardLetters();
+            });
+    }
+
+    public void OnNoThanksButton()
+    {
+        GameManager.Instance.GameOver();
+    }
+
 }
