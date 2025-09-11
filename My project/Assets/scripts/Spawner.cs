@@ -61,6 +61,7 @@ public class Spawner : MonoBehaviour
             int index = Random.Range(0, offerPrefabs.Length);
             Vector3 spawnPos = new Vector3(i * xSpacing, yPos, 0);
             GameObject letter = Instantiate(offerPrefabs[index], spawnPos, Quaternion.identity);
+            letter.transform.localScale = Vector3.zero; // for animation 0 to preview 
             letter.transform.localScale = Vector3.one * 0.5f;  // preview
 
             DragDrop dragDrop = letter.GetComponent<DragDrop>();
@@ -71,6 +72,9 @@ public class Spawner : MonoBehaviour
             AssignRandomColor(letter);
 
             activeLetters.Add(letter);
+
+            // start scale anim
+            StartCoroutine(AnimatePopIn(letter.transform, 0.2f));
         }
 
         if (activeLetters.Count != 0)
@@ -130,6 +134,35 @@ public class Spawner : MonoBehaviour
             }
         }
         activeLetters.Clear();
+    }
+
+    private IEnumerator AnimatePopIn(Transform target, float duration)
+    {
+        float time = 0f;
+        Vector3 startScale = Vector3.zero;
+        Vector3 endScale = Vector3.one * 0.5f; // preview
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            t = Mathf.Sin(t * Mathf.PI * 0.5f); // easing (smooth pop)
+
+            target.localScale = Vector3.Lerp(startScale, Vector3.one, t);
+            yield return null;
+        }
+        time = 0f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            t = Mathf.Sin(t * Mathf.PI * 0.5f); // easing (smooth pop)
+
+            target.localScale = Vector3.Lerp(Vector3.one, endScale, t);
+            yield return null;
+        }
+
+        target.localScale = endScale;
     }
     
 }

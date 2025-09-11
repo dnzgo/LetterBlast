@@ -57,6 +57,7 @@ public class UIManager : MonoBehaviour
     {
         HideAll();
         gameHUDPanel.SetActive(true);
+        DragDrop.dragEnabled = true;
         AdManager.Instance.ShowAdaptiveBanner();
     }
     public void ShowPause()
@@ -82,6 +83,7 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         gameOverPanel.SetActive(false);
         rewardedAdOfferPanel.SetActive(false);
+        DragDrop.dragEnabled = false;
         AdManager.Instance.HideBanner();
     }
     public void ShowCombo(string message)

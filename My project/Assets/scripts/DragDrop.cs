@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class DragDrop : MonoBehaviour
 {
+    public static bool dragEnabled = true;
+
     private Vector3 startPosition;
     private bool isDragging = false;
 
@@ -29,6 +31,7 @@ public class DragDrop : MonoBehaviour
 
     void OnMouseDown()
     {
+        if (!dragEnabled) return; // if GameHUD is not active do not make anything
         startPosition = transform.position;
         transform.localScale = Vector3.one; // normalize the size to fit grid
         isDragging = true;
@@ -36,6 +39,7 @@ public class DragDrop : MonoBehaviour
 
     void OnMouseDrag()
     {
+        if (!dragEnabled) return; // if GameHUD is not active do not make anything
         if (isDragging)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -45,6 +49,7 @@ public class DragDrop : MonoBehaviour
 
     void OnMouseUp()
     {
+        if (!dragEnabled) return; // if GameHUD is not active do not make anything
         isDragging = false;
 
         // todo: to fit grid

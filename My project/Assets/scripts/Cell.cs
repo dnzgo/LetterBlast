@@ -59,33 +59,12 @@ public class Cell : MonoBehaviour
 
     private IEnumerator ClearAnimRoutine()
     {
-        /*
-        // bigger
-        float t = 0;
-        while (t < 0.1f)
-        {
-            t += Time.deltaTime;
-            transform.localScale = Vector3.Lerp(originalScale, originalScale * 1.2f, t / 0.1f);
-            yield return null;
-        }
-
-        // smaller
-        t = 0;
-        while (t < 0.1f)
-        {
-            t += Time.deltaTime;
-            transform.localScale = Vector3.Lerp(originalScale * 1.2f, originalScale, t / 0.1f);
-            yield return null;
-        }
-
-        transform.localScale = originalScale;
-        */
         Vector3 originalScale = transform.localScale;
 
-    // 1️⃣ Pop animasyonu
+    // 1️⃣ Pop anim
     float t = 0f;
     float duration = 0.2f;
-    // 3️⃣ Particle patlaması
+    // 3️⃣ Particle
     if (clearEffectPrefab != null)
     {
         GameObject effect = Instantiate(clearEffectPrefab, transform.position, Quaternion.identity);
@@ -99,7 +78,6 @@ public class Cell : MonoBehaviour
             yield return null;
         }
 
-    // Küçültme
     t = 0f;
     while (t < duration)
     {
@@ -110,7 +88,7 @@ public class Cell : MonoBehaviour
 
     transform.localScale = originalScale;
 
-    // 2️⃣ Hücreyi temizle
+    // 2️⃣ clear cell
     ResetAppearance();
     SetOccupied(false);
 
