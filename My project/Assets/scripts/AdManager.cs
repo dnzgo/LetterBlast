@@ -1,4 +1,5 @@
 using UnityEngine;
+using GoogleMobileAds;
 using GoogleMobileAds.Api;
 using System;
 
@@ -9,6 +10,8 @@ public class AdManager : MonoBehaviour
     private BannerView bannerView;
     private InterstitialAd interstitialAd;
     private RewardedAd rewardedAd;
+
+    int yOffsetBanner = 20;
 
     // can be override from inspector
 #if UNITY_ANDROID
@@ -44,22 +47,39 @@ public class AdManager : MonoBehaviour
     }
 
     #region Banner
-    public void ShowBannerTop()
-    {
-        ShowBanner(AdPosition.Top);
-    }
-
-    public void ShowBannerBottom()
-    {
-        ShowBanner(AdPosition.Bottom);
-    }
-
-    private void ShowBanner(AdPosition pos)
+    public void ShowBanner()
     {
         DestroyBanner();
 
-        bannerView = new BannerView(bannerId, AdSize.Banner, pos);
+        int screenHeight = Screen.height;
+        int bannerHeight = AdSize.Banner.Height;
+        int yOffset = 50;
+        int x = 0;
+        int y = -screenHeight + bannerHeight + yOffset;
+
+        bannerView = new BannerView(bannerId, AdSize.Banner, AdPosition.Bottom);
         var request = new AdRequest();
+        bannerView.LoadAd(request);
+    }
+
+    public void ShowAdaptiveBanner()
+    {
+        // destroy if there is a banner
+        if (bannerView != null)
+        {
+            bannerView.Destroy();
+        }
+
+        // adaptive banner
+        AdSize adSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(Screen.width);
+
+        // position
+        int screenHeight = Screen.height;
+        int yOffset = 50;
+        int y =  yOffset -(screenHeight / 2);
+
+        bannerView = new BannerView(bannerId, adSize, 0, y);
+        AdRequest request = new AdRequest();
         bannerView.LoadAd(request);
     }
 

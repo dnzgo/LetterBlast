@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
     {
         HideAll();
         gameHUDPanel.SetActive(true);
-        AdManager.Instance.ShowBannerBottom();
+        AdManager.Instance.ShowAdaptiveBanner();
     }
     public void ShowPause()
     {
