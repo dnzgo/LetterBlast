@@ -39,6 +39,15 @@ public class AdManager : MonoBehaviour
         // (optional)make sure events come from main thread
         MobileAds.RaiseAdEventsOnUnityMainThread = true;
 
+        // RequestConfiguration
+        RequestConfiguration requestConfiguration = new RequestConfiguration
+        {
+            TagForChildDirectedTreatment = TagForChildDirectedTreatment.True,
+            MaxAdContentRating = MaxAdContentRating.G // optional
+        };
+
+        MobileAds.SetRequestConfiguration(requestConfiguration);
+
         MobileAds.Initialize(initStatus => {
             // Ads will be ready when app opened
             LoadInterstitial();
@@ -75,8 +84,12 @@ public class AdManager : MonoBehaviour
 
         // position
         int screenHeight = Screen.height;
+
         int yOffset = 50;
         int y =  yOffset -(screenHeight / 2);
+
+        Debug.Log(screenHeight);
+        Debug.Log(y);
 
         bannerView = new BannerView(bannerId, adSize, 0, y);
         AdRequest request = new AdRequest();
@@ -184,7 +197,7 @@ public class AdManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Show rewarded; when the user receives the reward, the onReward callback is triggered.
+    /// Sow rewarded; when the user receives the reward, the onReward callback is triggered.
     /// </summary>
     public void ShowRewarded(Action onReward)
     {
