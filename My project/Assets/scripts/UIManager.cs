@@ -157,6 +157,8 @@ public class UIManager : MonoBehaviour
 
         while (t < duration)
         {
+            if (obj == null) yield break; // obj destroyed → stop coroutine
+
             t += Time.deltaTime;
             float normalized = t / duration;
 

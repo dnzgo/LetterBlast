@@ -34,7 +34,8 @@ public class UIButtons : MonoBehaviour
     AdManager.Instance.ShowRewarded(
             onReward: () =>
             {
-                // Oyuna devam etmek için 3 tek hücrelik letter spawn et
+                // to continue spawn 3 rewardLetter
+                GameManager.Instance.ConsumeRewardOffer();
                 UIManager.Instance.ShowGameHUD();
                 Spawner spawner = FindFirstObjectByType<Spawner>();
                 if (spawner != null)

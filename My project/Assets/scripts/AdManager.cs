@@ -56,20 +56,6 @@ public class AdManager : MonoBehaviour
     }
 
     #region Banner
-    public void ShowBanner()
-    {
-        DestroyBanner();
-
-        int screenHeight = Screen.height;
-        int bannerHeight = AdSize.Banner.Height;
-        int yOffset = 50;
-        int x = 0;
-        int y = -screenHeight + bannerHeight + yOffset;
-
-        bannerView = new BannerView(bannerId, AdSize.Banner, AdPosition.Bottom);
-        var request = new AdRequest();
-        bannerView.LoadAd(request);
-    }
 
     public void ShowAdaptiveBanner()
     {
@@ -86,7 +72,9 @@ public class AdManager : MonoBehaviour
         int screenHeight = Screen.height;
 
         int yOffset = 50;
-        int y =  yOffset -(screenHeight / 2);
+        int bannerHeight = adSize.Height;
+        if (bannerHeight == 0) bannerHeight = 220;
+        int y =  yOffset + bannerHeight -screenHeight;
 
         Debug.Log(screenHeight);
         Debug.Log(y);

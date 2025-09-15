@@ -4,13 +4,8 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public Spawner spawner;
     public GridManager gridManager;
-
-    private bool isPaused = false;
-    private bool isGameStarted = false;
-
     public int score = 0;
     public int bestScore = 0;
 
@@ -18,6 +13,11 @@ public class GameManager : MonoBehaviour
     public int multiClearBonusPerStructure = 50;
     public int streakBonusPerStep = 20;
     public int comboStreak = 0;
+
+    public int maxRewardOffersPerGame = 3;
+    private int currentRewardOffers = 0;
+    private bool isPaused = false;
+    private bool isGameStarted = false;
 
     void Awake()
     {
@@ -71,8 +71,14 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameOver()
     {
-        // open ad panel before game over activation
-        UIManager.Instance.ShowRewardedPanel();
+        if (CanOfferRewarded())
+        {
+            UIManager.Instance.ShowRewardedPanel();
+        }
+        else
+        {
+            GameOver();
+        }
     }
 
     public void GameOver()
@@ -103,7 +109,9 @@ public class GameManager : MonoBehaviour
         isGameStarted = true;
         isPaused = false;
         Time.timeScale = 1f;
+        // reset score and rewardedAd count
         score = 0;
+        currentRewardOffers = 0;
         spawner.SpawnBatch();
         UIManager.Instance.UpdateScoreUI(score);
     }
@@ -126,8 +134,9 @@ public class GameManager : MonoBehaviour
         isPaused = false;
         isGameStarted = true;
         Time.timeScale = 1f;
-        // score reset
+        // reset score and rewardedAd count
         score = 0;
+        currentRewardOffers = 0;
         UIManager.Instance.UpdateScoreUI(score);
 
         // grid reset
@@ -151,6 +160,16 @@ public class GameManager : MonoBehaviour
         gridManager.ClearGrid();
         spawner.ClearLetters();
         score = 0;
+    }
+    // Reward Limit control
+    public bool CanOfferRewarded()
+    {
+        return currentRewardOffers < maxRewardOffersPerGame;
+    }
+
+    public void ConsumeRewardOffer()
+    {
+        currentRewardOffers++;
     }
 
 }
