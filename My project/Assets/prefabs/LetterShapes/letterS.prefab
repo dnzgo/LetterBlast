@@ -54,6 +54,8 @@ MonoBehaviour:
   gridManager: {fileID: 0}
   spawner: {fileID: 0}
   placedMult: 1
+  fingerOffset: 3
+  assignedColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &5493194418376782579
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -98,7 +100,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.1480172, y: 4.1471033}
+  m_Size: {x: 4, y: 4.1471033}
   m_EdgeRadius: 0
 --- !u!1001 &1892431150546189301
 PrefabInstance:

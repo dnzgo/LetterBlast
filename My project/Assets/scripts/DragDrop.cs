@@ -14,6 +14,7 @@ public class DragDrop : MonoBehaviour
     public Spawner spawner;
 
     public int placedMult = 1;
+    public float fingerOffset = 3.0f;
 
     public Color assignedColor;
 
@@ -43,7 +44,7 @@ public class DragDrop : MonoBehaviour
         if (isDragging)
         {
             Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            transform.position = new Vector3(mousePos.x, mousePos.y, 0);
+            transform.position = new Vector3(mousePos.x, mousePos.y + fingerOffset, 0); // added ofset manually
         }
     }
 
@@ -153,8 +154,6 @@ public class DragDrop : MonoBehaviour
         {
             if (!child.CompareTag("letterCell")) continue;
 
-            // Eğer localPosition birim olarak cellSize ise, direkt RoundToInt uygula.
-            // Eğer child.localPosition birimler farklıysa, bölünmesi gerekebilir (örn /cellSize).
             int x = Mathf.RoundToInt(child.localPosition.x);
             int y = Mathf.RoundToInt(child.localPosition.y);
             list.Add(new Vector2Int(x, y));

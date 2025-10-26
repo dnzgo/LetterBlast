@@ -16,14 +16,14 @@ public class AdManager : MonoBehaviour
     // can be override from inspector
 #if UNITY_ANDROID
     [Header("Android Test IDs")]
-    [SerializeField] private string bannerId       = "ca-app-pub-3940256099942544/6300978111";
-    [SerializeField] private string interstitialId = "ca-app-pub-3940256099942544/1033173712";
-    [SerializeField] private string rewardedId     = "ca-app-pub-3940256099942544/5224354917";
+    private string bannerId       = "ca-app-pub-3940256099942544/6300978111";
+    private string interstitialId = "ca-app-pub-3940256099942544/1033173712";
+    private string rewardedId     = "ca-app-pub-3940256099942544/5224354917";
 #elif UNITY_IOS
     [Header("iOS Test IDs")]
-    [SerializeField] private string bannerId       = "ca-app-pub-3940256099942544/2934735716";
-    [SerializeField] private string interstitialId = "ca-app-pub-3940256099942544/4411468910";
-    [SerializeField] private string rewardedId     = "ca-app-pub-3940256099942544/1712485313";
+    private string bannerId       = "ca-app-pub-3940256099942544/2435281174";
+    private string interstitialId = "ca-app-pub-3940256099942544/4411468910";
+    private string rewardedId     = "ca-app-pub-3940256099942544/1712485313";
 #else
     [Header("Editor IDs (won't load real ads)")]
     [SerializeField] private string bannerId       = "test-banner";
@@ -69,17 +69,15 @@ public class AdManager : MonoBehaviour
         AdSize adSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(Screen.width);
 
         // position
+        /*
         int screenHeight = Screen.height;
 
         int yOffset = 50;
         int bannerHeight = adSize.Height;
         if (bannerHeight == 0) bannerHeight = 220;
-        int y =  yOffset + bannerHeight -screenHeight;
-
-        Debug.Log(screenHeight);
-        Debug.Log(y);
-
-        bannerView = new BannerView(bannerId, adSize, 0, y);
+        int y =  yOffset + bannerHeight -(screenHeight/2);
+        */
+        bannerView = new BannerView(bannerId, adSize, AdPosition.Bottom); // BannerView(bannerId, adSize, 0, y)
         AdRequest request = new AdRequest();
         bannerView.LoadAd(request);
     }
