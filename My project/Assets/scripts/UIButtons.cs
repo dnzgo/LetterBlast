@@ -48,4 +48,10 @@ public class UIButtons : MonoBehaviour
         GameManager.Instance.GameOver();
     }
 
+    public void OnNoAdsButton()
+    {
+        UIManager.Instance.ShowNoAdsOfferPanel();
+        GameManager.Instance.PauseGame();
+    }
+
 }

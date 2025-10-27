@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject rewardedAdOfferPanel;
+    public GameObject noAdsOfferPanel;
 
     [Header("Game HUD UI")]
     public TextMeshProUGUI scoreText;
@@ -23,6 +24,9 @@ public class UIManager : MonoBehaviour
     [Header("GameOver UI")]
     public TextMeshProUGUI gameOverScore;
     public TextMeshProUGUI gameOverBestScore;
+
+    [Header("IAP UI")]
+    public TextMeshProUGUI priceOfNoAds;
 
     void Awake()
     {
@@ -76,6 +80,12 @@ public class UIManager : MonoBehaviour
         HideAll();
         rewardedAdOfferPanel.SetActive(true);
     }
+
+    public void ShowNoAdsOfferPanel()
+    {
+        HideAll();
+        noAdsOfferPanel.SetActive(true);
+    }
     private void HideAll()
     {
         mainMenuPanel.SetActive(false);
@@ -83,6 +93,7 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         gameOverPanel.SetActive(false);
         rewardedAdOfferPanel.SetActive(false);
+        noAdsOfferPanel.SetActive(false);
         DragDrop.dragEnabled = false;
         AdManager.Instance.HideBanner();
     }

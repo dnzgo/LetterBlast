@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 8a875a197306c452b938e803ef3eebab
+guid: a3f33f820c16f4864b9404d565108a84
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8638421506506822070
-    second: Untitled_Artwork 5_0
+      213: 273775683549572571
+    second: ChatGPT_Image_27_Eki_2025_17_32_44 4_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 671
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled_Artwork 5_0
+      name: ChatGPT_Image_27_Eki_2025_17_32_44 4_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 4
-        width: 126
-        height: 60
+        y: 0
+        width: 671
+        height: 671
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a4ee09c78692e1880800000000000000
-      internalID: -8638421506506822070
+      spriteID: bddac1e9885acc300800000000000000
+      internalID: 273775683549572571
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Untitled_Artwork 5_0: -8638421506506822070
+      ChatGPT_Image_27_Eki_2025_17_32_44 4_0: 273775683549572571
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

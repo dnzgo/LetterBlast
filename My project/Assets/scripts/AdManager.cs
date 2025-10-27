@@ -11,25 +11,10 @@ public class AdManager : MonoBehaviour
     private InterstitialAd interstitialAd;
     private RewardedAd rewardedAd;
 
-    int yOffsetBanner = 20;
+    private string bannerID       = "ca-app-pub-3940256099942544/2435281174";
+    private string interstitialID = "ca-app-pub-3940256099942544/4411468910";
+    private string rewardedID     = "ca-app-pub-3940256099942544/1712485313";
 
-    // can be override from inspector
-#if UNITY_ANDROID
-    [Header("Android Test IDs")]
-    private string bannerId       = "ca-app-pub-3940256099942544/6300978111";
-    private string interstitialId = "ca-app-pub-3940256099942544/1033173712";
-    private string rewardedId     = "ca-app-pub-3940256099942544/5224354917";
-#elif UNITY_IOS
-    [Header("iOS Test IDs")]
-    private string bannerId       = "ca-app-pub-3940256099942544/2435281174";
-    private string interstitialId = "ca-app-pub-3940256099942544/4411468910";
-    private string rewardedId     = "ca-app-pub-3940256099942544/1712485313";
-#else
-    [Header("Editor IDs (won't load real ads)")]
-    [SerializeField] private string bannerId       = "test-banner";
-    [SerializeField] private string interstitialId = "test-interstitial";
-    [SerializeField] private string rewardedId     = "test-rewarded";
-#endif
 
     private void Awake()
     {
@@ -48,8 +33,10 @@ public class AdManager : MonoBehaviour
 
         MobileAds.SetRequestConfiguration(requestConfiguration);
 
-        MobileAds.Initialize(initStatus => {
-            // Ads will be ready when app opened
+        // Initialize Google Mobile Ads SDK.
+        MobileAds.Initialize((InitializationStatus initStatus) =>
+        {
+            // This callback is called once the MobileAds SDK is initialized.
             LoadInterstitial();
             LoadRewarded();
         });
@@ -59,27 +46,22 @@ public class AdManager : MonoBehaviour
 
     public void ShowAdaptiveBanner()
     {
-        // destroy if there is a banner
         if (bannerView != null)
         {
             bannerView.Destroy();
         }
+        // Get the device safe width in density-independent pixels.
+        int deviceWidth = MobileAds.Utils.GetDeviceSafeWidth();
 
-        // adaptive banner
-        AdSize adSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(Screen.width);
+        // Define the anchored adaptive ad size.
+        AdSize adaptiveSize =
+            AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(deviceWidth);
 
-        // position
-        /*
-        int screenHeight = Screen.height;
+        // Create an anchored adaptive banner view.
+        bannerView = new BannerView(bannerID, adaptiveSize, AdPosition.Bottom);
 
-        int yOffset = 50;
-        int bannerHeight = adSize.Height;
-        if (bannerHeight == 0) bannerHeight = 220;
-        int y =  yOffset + bannerHeight -(screenHeight/2);
-        */
-        bannerView = new BannerView(bannerId, adSize, AdPosition.Bottom); // BannerView(bannerId, adSize, 0, y)
-        AdRequest request = new AdRequest();
-        bannerView.LoadAd(request);
+        // Send a request to load an ad into the banner view.
+        bannerView.LoadAd(new AdRequest());
     }
 
     public void HideBanner()
@@ -101,7 +83,7 @@ public class AdManager : MonoBehaviour
     public void LoadInterstitial()
     {
         // Static Load API
-        InterstitialAd.Load(interstitialId, new AdRequest(), (InterstitialAd ad, LoadAdError error) =>
+        InterstitialAd.Load(interstitialID, new AdRequest(), (InterstitialAd ad, LoadAdError error) =>
         {
             if (error != null)
             {
@@ -128,11 +110,6 @@ public class AdManager : MonoBehaviour
         });
     }
 
-    public bool CanShowInterstitial()
-    {
-        return interstitialAd != null && interstitialAd.CanShowAd();
-    }
-
     public void ShowInterstitial()
     {
         if (interstitialAd != null && interstitialAd.CanShowAd())
@@ -151,7 +128,11 @@ public class AdManager : MonoBehaviour
     #region Rewarded
     public void LoadRewarded()
     {
-        RewardedAd.Load(rewardedId, new AdRequest(), (RewardedAd ad, LoadAdError error) =>
+
+        // Create our request used to load the ad.
+        var adRequest = new AdRequest();
+
+        RewardedAd.Load(rewardedID, adRequest, (RewardedAd ad, LoadAdError error) =>
         {
             if (error != null)
             {
@@ -175,11 +156,6 @@ public class AdManager : MonoBehaviour
                 LoadRewarded();
             };
         });
-    }
-
-    public bool CanShowRewarded()
-    {
-        return rewardedAd != null && rewardedAd.CanShowAd();
     }
 
     /// <summary>
