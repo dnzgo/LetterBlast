@@ -1,4 +1,4 @@
-Letter Blast!
+
 Privacy Policy for LetterBlast!
 
 Last updated: October 29, 2025
