@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &11275754
 RectTransform:
   m_ObjectHideFlags: 0
@@ -852,7 +852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &132291700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3032,7 +3032,6 @@ GameObject:
   - component: {fileID: 1220480098}
   - component: {fileID: 1220480100}
   - component: {fileID: 1220480099}
-  - component: {fileID: 1220480101}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -3098,52 +3097,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1220480097}
   m_CullTransparentMesh: 1
---- !u!114 &1220480101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220480097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b79b5624d944058bd39aad2b90fb275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Purchasing.Codeless::UnityEngine.Purchasing.CodelessIAPButton
-  productId: 
-  buttonType: 0
-  automaticallyConfirmTransaction: 1
-  onProductFetched:
-    m_PersistentCalls:
-      m_Calls: []
-  onProductFetchFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFetched:
-    m_PersistentCalls:
-      m_Calls: []
-  onTransactionsRestored:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderPending:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderConfirmed:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFailed:
-    m_PersistentCalls:
-      m_Calls: []
-  onOrderDeferred:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseCompleteLegacy:
-    m_PersistentCalls:
-      m_Calls: []
-  onPurchaseFailedLegacy:
-    m_PersistentCalls:
-      m_Calls: []
-  button: {fileID: 0}
 --- !u!1 &1240607763
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,7 +3420,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1261165943
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4904,8 +4857,8 @@ MonoBehaviour:
   gridManager: {fileID: 1848456005}
   score: 0
   bestScore: 0
-  multiClearBonusPerStructure: 50
-  streakBonusPerStep: 20
+  multiClearBonusPerStructure: 100
+  streakBonusPerStep: 200
   comboStreak: 0
   maxRewardOffersPerGame: 3
 --- !u!4 &1842544118

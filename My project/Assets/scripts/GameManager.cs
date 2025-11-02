@@ -10,8 +10,8 @@ public class GameManager : MonoBehaviour
     public int bestScore = 0;
 
     [Header("Combo Settings")]
-    public int multiClearBonusPerStructure = 50;
-    public int streakBonusPerStep = 20;
+    public int multiClearBonusPerStructure = 100;
+    public int streakBonusPerStep = 200;
     public int comboStreak = 0;
 
     public int maxRewardOffersPerGame = 3;
