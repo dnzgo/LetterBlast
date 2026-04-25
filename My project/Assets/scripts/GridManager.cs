@@ -16,7 +16,7 @@ public class GridManager : MonoBehaviour
 
     public Cell[,] gridCells; // fill in GanerateGrid
 
-    private int squareSize = 3;
+    private int squareSize = 4;
 
     // List to save full parts
     private List<int> fullRows = new List<int>();

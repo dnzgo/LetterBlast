@@ -50,6 +50,7 @@ MonoBehaviour:
   gridManager: {fileID: 0}
   spawner: {fileID: 0}
   placedMult: 1
+  fingerOffset: 3
   assignedColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!61 &-4595426124477967665
 BoxCollider2D:
