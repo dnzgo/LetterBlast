@@ -6,8 +6,9 @@ public class Spawner : MonoBehaviour
 {
     public GameObject[] letterPrefabs;
     public GameObject[] offerPrefabs;
-    public float yPos = -4f;
-    public float xSpacing = 2f;
+    public float yPos = -7f;
+    public float xPos = -3.5f;
+    public float xSpacing = 3f;
 
     private List<GameObject> activeLetters = new List<GameObject>();
 
@@ -24,10 +25,10 @@ public class Spawner : MonoBehaviour
     {
         activeLetters.Clear();
 
-        for (int i = -1; i <= 1; i++)
+        for (int i = 0; i < 3; i++)
         {
             int index = Random.Range(0, letterPrefabs.Length);
-            Vector3 spawnPos = new Vector3(i * xSpacing, yPos, 0);
+            Vector3 spawnPos = new Vector3(xPos + i * xSpacing, yPos, 0);
             GameObject letter = Instantiate(letterPrefabs[index], spawnPos, Quaternion.identity);
             letter.transform.localScale = Vector3.one * 0.5f;  // preview
 
