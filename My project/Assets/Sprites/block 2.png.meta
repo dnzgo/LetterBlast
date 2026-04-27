@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9e93624dcff2348e880f368c27c181a2
+guid: fd93f5337b3e941d081e1aa5047f9224
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4571640981238260828
-    second: darkpanel_0
+      213: 3008837320195958945
+    second: block 2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 1254
+  spritePixelsToUnits: 224
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: darkpanel_0
+      name: block 2_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 13
-        width: 1229
-        height: 1229
+        x: 0
+        y: 0
+        width: 224
+        height: 226
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c542357304bb17f30800000000000000
-      internalID: 4571640981238260828
+      spriteID: 1a8e739e99981c920800000000000000
+      internalID: 3008837320195958945
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      darkpanel_0: 4571640981238260828
+      block 2_0: 3008837320195958945
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
