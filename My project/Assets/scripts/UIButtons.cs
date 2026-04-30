@@ -31,12 +31,20 @@ public class UIButtons : MonoBehaviour
     public void OnWatchAdButton()
     {
 
-    AdManager.Instance.ShowRewarded(
+        AdManager.Instance.ShowRewarded(
             onReward: () =>
             {
-                // to continue spawn 3 rewardLetter
+                // Continue with 3 reward letters + time bonus based on game-over reason.
                 GameManager.Instance.ConsumeRewardOffer();
                 UIManager.Instance.ShowGameHUD();
+                GameManager.Instance.ResumeGame();
+
+                float rewardedTime = GameManager.Instance.GetRewardedTimeForLastGameOver();
+                if (rewardedTime > 0f)
+                {
+                    TimeManager.Instance.AddTime(rewardedTime);
+                }
+
                 Spawner spawner = FindFirstObjectByType<Spawner>();
                 if (spawner != null)
                     spawner.SpawnRewardLetters();

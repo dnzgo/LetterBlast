@@ -19,7 +19,18 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI bestScoreText;
     public TextMeshProUGUI comboText;
     public GameObject floatingScorePrefab;
+    public GameObject floatingTimePrefab;
+    public int floatingTimePoolSize = 3;
+    public float floatingTimeUnderOffset = -60f;
+    public float floatingTimeRandomX = 36f;
+    public float floatingTimeRandomY = 16f;
+    public float floatingTimeMaxStartDelay = 0.08f;
+    public float floatingTimeCurveAmount = 20f;
+    public float floatingTimeTargetRandomX = 8f;
     public Transform gameHUDTransform;
+    private GameObject[] floatingTimePool;
+    private Coroutine[] floatingTimeRoutines;
+    private int floatingTimeNextIndex = 0;
 
     [Header("GameOver UI")]
     public TextMeshProUGUI gameOverScore;
@@ -157,7 +168,69 @@ public class UIManager : MonoBehaviour
         // animation: move to scoreText
         StartCoroutine(FloatingScoreRoutine(obj.transform, tmp, isBonus));
     }
-    
+
+    public void SpawnFloatingTime(float seconds)
+    {
+        if (floatingTimePrefab == null || gameHUDTransform == null) return;
+        if (TimeManager.Instance == null || TimeManager.Instance.timerText == null) return;
+
+        EnsureFloatingTimePool();
+
+        int index = floatingTimeNextIndex;
+        floatingTimeNextIndex = (floatingTimeNextIndex + 1) % floatingTimePool.Length;
+
+        if (floatingTimeRoutines[index] != null)
+            StopCoroutine(floatingTimeRoutines[index]);
+
+        GameObject obj = floatingTimePool[index];
+        RectTransform objRect = obj.GetComponent<RectTransform>();
+        TextMeshProUGUI tmp = obj.GetComponent<TextMeshProUGUI>();
+        RectTransform timerRect = TimeManager.Instance.timerText.rectTransform;
+
+        if (objRect == null || tmp == null || timerRect == null) return;
+
+        obj.SetActive(true);
+
+        tmp.text = $"+{Mathf.RoundToInt(seconds)}s";
+        tmp.color = new Color(0.4f, 1f, 0.4f, 1f);
+
+        float randomX = Random.Range(-floatingTimeRandomX, floatingTimeRandomX);
+        float randomY = Random.Range(-floatingTimeRandomY, floatingTimeRandomY);
+        Vector3 startPos = timerRect.position + new Vector3(randomX, floatingTimeUnderOffset + randomY, 0f);
+        float targetRandomX = Random.Range(-floatingTimeTargetRandomX, floatingTimeTargetRandomX);
+        Vector3 targetPos = timerRect.position + new Vector3(targetRandomX, 0f, 0f);
+        float startDelay = Random.Range(0f, floatingTimeMaxStartDelay);
+        float curveDirection = Mathf.Sign(Random.Range(-1f, 1f));
+        if (Mathf.Approximately(curveDirection, 0f))
+            curveDirection = 1f;
+        float curveAmount = Random.Range(floatingTimeCurveAmount * 0.6f, floatingTimeCurveAmount) * curveDirection;
+
+        objRect.position = startPos;
+        objRect.localScale = Vector3.one;
+
+        floatingTimeRoutines[index] = StartCoroutine(FloatingTimeRoutine(index, objRect, tmp, startPos, targetPos, startDelay, curveAmount));
+    }
+
+    private void EnsureFloatingTimePool()
+    {
+        if (floatingTimePool != null && floatingTimePool.Length == floatingTimePoolSize && floatingTimePoolSize > 0)
+            return;
+
+        if (floatingTimePoolSize < 1)
+            floatingTimePoolSize = 1;
+
+        floatingTimePool = new GameObject[floatingTimePoolSize];
+        floatingTimeRoutines = new Coroutine[floatingTimePoolSize];
+        floatingTimeNextIndex = 0;
+
+        for (int i = 0; i < floatingTimePoolSize; i++)
+        {
+            GameObject obj = Instantiate(floatingTimePrefab, gameHUDTransform);
+            obj.SetActive(false);
+            floatingTimePool[i] = obj;
+        }
+    }
+
     private IEnumerator FloatingScoreRoutine(Transform obj, TextMeshProUGUI tmp, bool isBonus)
     {
         Vector3 targetPos = scoreText.transform.position; // score text UI position
@@ -179,6 +252,39 @@ public class UIManager : MonoBehaviour
         }
 
         Destroy(obj.gameObject);
+    }
+
+    private IEnumerator FloatingTimeRoutine(int index, RectTransform obj, TextMeshProUGUI tmp, Vector3 startPos, Vector3 targetPos, float startDelay, float curveAmount)
+    {
+        if (startDelay > 0f)
+            yield return new WaitForSeconds(startDelay);
+
+        float duration = 0.45f;
+        float t = 0f;
+
+        Vector3 startScale = Vector3.one;
+        Vector3 endScale = Vector3.one * 0.85f;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float normalized = Mathf.Clamp01(t / duration);
+            float eased = 1f - Mathf.Pow(1f - normalized, 3f);
+
+            Vector3 straightPos = Vector3.Lerp(startPos, targetPos, eased);
+            float arc = Mathf.Sin(normalized * Mathf.PI) * curveAmount;
+            obj.position = straightPos + new Vector3(arc, 0f, 0f);
+            obj.localScale = Vector3.Lerp(startScale, endScale, eased);
+
+            Color c = tmp.color;
+            c.a = 1f - normalized;
+            tmp.color = c;
+
+            yield return null;
+        }
+
+        obj.gameObject.SetActive(false);
+        floatingTimeRoutines[index] = null;
     }
 
 

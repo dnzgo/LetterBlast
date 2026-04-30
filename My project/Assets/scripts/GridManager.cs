@@ -150,6 +150,7 @@ public class GridManager : MonoBehaviour
                 cellsToClear.Add(new Vector2Int(x, y));
             }
             GameManager.Instance.AddScore(gridWidth * 10, transform.position, false);
+            TimeManager.Instance.AddTime(5f);
             clearedStructures++;
         }
 
@@ -161,6 +162,7 @@ public class GridManager : MonoBehaviour
                 cellsToClear.Add(new Vector2Int(x, y));
             }
             GameManager.Instance.AddScore(gridHeigth * 10, transform.position, false);
+            TimeManager.Instance.AddTime(5f);
             clearedStructures++;
         }
 
@@ -175,6 +177,7 @@ public class GridManager : MonoBehaviour
                 }
             }
             GameManager.Instance.AddScore(squareSize * squareSize * 5, transform.position, false);
+            TimeManager.Instance.AddTime(5f);
             clearedStructures++;
         }
 
@@ -194,8 +197,10 @@ public class GridManager : MonoBehaviour
             if (clearedStructures > 1)
             {
                 int multiBonus = (clearedStructures - 1) * GameManager.Instance.multiClearBonusPerStructure;
+                float multiBonusTime = (clearedStructures - 1) * GameManager.Instance.timeBonus;
                 GameManager.Instance.AddScore(multiBonus, transform.position, true);
-                message += $"Multi clear x{clearedStructures}\n";
+                TimeManager.Instance.AddTime(multiBonusTime);
+                message += $"Multi clear x{clearedStructures}\n ";
             }
 
             // Streak

@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
+    public enum GameOverReason
+    {
+        None,
+        TimeUp,
+        Blocked
+    }
+
     public static GameManager Instance;
     public Spawner spawner;
     public GridManager gridManager;
@@ -13,11 +20,13 @@ public class GameManager : MonoBehaviour
     public int multiClearBonusPerStructure = 100;
     public int streakBonusPerStep = 200;
     public int comboStreak = 0;
+    public float timeBonus = 2.0f;
 
     public int maxRewardOffersPerGame = 3;
     private int currentRewardOffers = 0;
     private bool isPaused = false;
     private bool isGameStarted = false;
+    private GameOverReason lastGameOverReason = GameOverReason.None;
 
     void Awake()
     {
@@ -65,14 +74,19 @@ public class GameManager : MonoBehaviour
 
         if (!canPlay)
         {
-            TriggerGameOver();
+            TriggerGameOver(GameOverReason.Blocked);
         }
     }
 
-    public void TriggerGameOver()
+    public void TriggerGameOver(GameOverReason reason)
     {
+        lastGameOverReason = reason;
+
         if (CanOfferRewarded())
         {
+            // Freeze game and timer while the rewarded offer panel is shown.
+            Time.timeScale = 0f;
+            TimeManager.Instance.PauseTimer();
             UIManager.Instance.ShowRewardedPanel();
         }
         else
@@ -84,6 +98,8 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("---Game Over---");
+        // stop timer
+        TimeManager.Instance.StopTimer();
 
         isGameStarted = false;
         Time.timeScale = 0f;
@@ -108,12 +124,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Started!");
         isGameStarted = true;
         isPaused = false;
+        lastGameOverReason = GameOverReason.None;
         Time.timeScale = 1f;
         // reset score and rewardedAd count
         score = 0;
         currentRewardOffers = 0;
         spawner.SpawnBatch();
         UIManager.Instance.UpdateScoreUI(score);
+        // start timer
+        TimeManager.Instance.StartTimer();
     }
     public void PauseGame()
     {
@@ -121,6 +140,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Paused!");
         isPaused = true;
         Time.timeScale = 0f;
+
+        TimeManager.Instance.PauseTimer();
     }
     public void ResumeGame()
     {
@@ -128,16 +149,20 @@ public class GameManager : MonoBehaviour
         Debug.Log("Game Resumed!");
         isPaused = false;
         Time.timeScale = 1f;
+        TimeManager.Instance.ResumeTimer();
     }
     public void RestartGame()
     {
         isPaused = false;
         isGameStarted = true;
+        lastGameOverReason = GameOverReason.None;
         Time.timeScale = 1f;
         // reset score and rewardedAd count
         score = 0;
         currentRewardOffers = 0;
         UIManager.Instance.UpdateScoreUI(score);
+        // start timer
+        TimeManager.Instance.StartTimer();
 
         // grid reset
         if (gridManager != null)
@@ -156,6 +181,7 @@ public class GameManager : MonoBehaviour
     {
         isGameStarted = false;
         isPaused = false;
+        lastGameOverReason = GameOverReason.None;
 
         gridManager.ClearGrid();
         spawner.ClearLetters();
@@ -170,6 +196,19 @@ public class GameManager : MonoBehaviour
     public void ConsumeRewardOffer()
     {
         currentRewardOffers++;
+    }
+
+    public float GetRewardedTimeForLastGameOver()
+    {
+        switch (lastGameOverReason)
+        {
+            case GameOverReason.TimeUp:
+                return 45f;
+            case GameOverReason.Blocked:
+                return 15f;
+            default:
+                return 0f;
+        }
     }
 
 }
