@@ -203,9 +203,9 @@ public class GameManager : MonoBehaviour
         switch (lastGameOverReason)
         {
             case GameOverReason.TimeUp:
-                return 45f;
+                return 60f;
             case GameOverReason.Blocked:
-                return 15f;
+                return 30f;
             default:
                 return 0f;
         }

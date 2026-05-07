@@ -5114,7 +5114,7 @@ MonoBehaviour:
   multiClearBonusPerStructure: 100
   streakBonusPerStep: 200
   comboStreak: 0
-  timeBonus: 2
+  timeBonus: 3
   maxRewardOffersPerGame: 3
 --- !u!4 &1842544118
 Transform:
